@@ -1,0 +1,7 @@
+# YTDrop requirements
+
+# Core dependency
+# yt-dlp>=2024.1.0
+
+# Optional: native drag-and-drop support
+tkinterdnd2>=0.3.0
