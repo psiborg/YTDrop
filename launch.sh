@@ -65,14 +65,20 @@ if ! "$PYTHON" -c "import tkinter" &>/dev/null; then
 fi
 ok "tkinter found."
 
-# ── Check/install yt-dlp ──────────────────────────────────────────────────────
-if ! "$PYTHON" -c "import yt_dlp" &>/dev/null; then
-    warn "yt-dlp not found. Installing..."
-    "$PYTHON" -m pip install --quiet yt-dlp
-    ok "yt-dlp installed."
-else
-    ok "yt-dlp found."
+# ── Check yt-dlp ─────────────────────────────────────────────
+if ! command -v yt-dlp &>/dev/null 2>&1; then
+    err "yt-dlp not found on PATH."
+    echo ""
+    echo " Download the standalone binary from:"
+    echo "   https://github.com/yt-dlp/yt-dlp/releases/latest"
+    echo ""
+    echo " Quick install:"
+    echo "   sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \\"
+    echo "        -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp"
+    echo ""
+    exit 1
 fi
+ok "yt-dlp found."
 
 # ── Check ffmpeg (optional) ───────────────────────────────────────────────────
 if command -v ffmpeg &>/dev/null; then

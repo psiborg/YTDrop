@@ -9,7 +9,7 @@ echo    YTDrop - yt-dlp GUI Launcher
 echo  ================================
 echo.
 
-:: ── Check Python ──────────────────────────────────────────────────────────────
+:: -- Check Python --------------------------------------------------------------
 python --version >nul 2>&1
 if errorlevel 1 (
     echo  [ERROR] Python is not installed or not found on PATH.
@@ -24,23 +24,24 @@ if errorlevel 1 (
 for /f "tokens=2 delims= " %%v in ('python --version 2^>^&1') do set PY_VER=%%v
 echo  [OK] Python %PY_VER% found.
 
-:: ── Check yt-dlp ──────────────────────────────────────────────────────────────
-@REM python -c "import yt_dlp" >nul 2>&1
-@REM if errorlevel 1 (
-@REM     echo.
-@REM     echo  [WARN] yt-dlp is not installed. Installing now...
-@REM     python -m pip install yt-dlp
-@REM     if errorlevel 1 (
-@REM         echo  [ERROR] Failed to install yt-dlp. Please run: pip install yt-dlp
-@REM         pause
-@REM         exit /b 1
-@REM     )
-@REM     echo  [OK] yt-dlp installed.
-@REM ) else (
-@REM     echo  [OK] yt-dlp found.
-@REM )
+:: -- Check yt-dlp --------------------------------------------------------------
+where yt-dlp >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo  [ERROR] yt-dlp.exe not found on PATH.
+    echo.
+    echo  Download the standalone binary from:
+    echo    https://github.com/yt-dlp/yt-dlp/releases/latest
+    echo.
+    echo  Place yt-dlp.exe in the same folder as ytdrop.py,
+    echo  or in any folder that is already on your PATH.
+    echo.
+    pause
+    exit /b 1
+)
+echo  [OK] yt-dlp found.
 
-:: ── Check tkinter ─────────────────────────────────────────────────────────────
+:: -- Check tkinter -------------------------------------------------------------
 python -c "import tkinter" >nul 2>&1
 if errorlevel 1 (
     echo.
@@ -51,7 +52,7 @@ if errorlevel 1 (
 )
 echo  [OK] tkinter found.
 
-:: ── Check ffmpeg (optional) ───────────────────────────────────────────────────
+:: -- Check ffmpeg (optional) ---------------------------------------------------
 ffmpeg -version >nul 2>&1
 if errorlevel 1 (
     echo  [WARN] ffmpeg not found on PATH. Audio extraction and video merging may fail.
@@ -60,7 +61,7 @@ if errorlevel 1 (
     echo  [OK] ffmpeg found.
 )
 
-:: ── Locate ytdrop.py ──────────────────────────────────────────────────────────
+:: -- Locate ytdrop.py ----------------------------------------------------------
 set SCRIPT_DIR=%~dp0
 set APP=%SCRIPT_DIR%ytdrop.py
 
@@ -72,7 +73,7 @@ if not exist "%APP%" (
     exit /b 1
 )
 
-:: ── Launch ────────────────────────────────────────────────────────────────────
+:: -- Launch --------------------------------------------------------------------
 echo.
 echo  Launching YTDrop...
 echo.
